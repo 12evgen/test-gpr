@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 
 module.exports = {
   name: 'client',
@@ -10,8 +11,8 @@ module.exports = {
   output: {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
-    path: path.resolve(__dirname, '../buildClient'),
-    publicPath: '/static/'
+    path: path.resolve(__dirname, '../tmp/buildClient'),
+    publicPath: '/'
   },
   stats: 'verbose',
   module: {
@@ -58,6 +59,31 @@ module.exports = {
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    new webpack.HashedModuleIdsPlugin() // not needed for strategy to work (just good practice)
-  ]
+    new webpack.HashedModuleIdsPlugin(), // not needed for strategy to work (just good practice)
+    new ServiceWorkerWebpackPlugin({
+      entry: path.resolve(__dirname, '../src/sw.js')
+    })
+  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: 'vendor',
+          priority: 1,
+          test: /\.css$/,
+          chunks: chunk => chunk.name == 'main',
+          enforce: true
+        },
+        vendor: {
+          name: 'vendor',
+          chunks: chunk => chunk.name == 'main',
+          reuseExistingChunk: true,
+          priority: 1,
+          test: module => /[\\/]node_modules[\\/]/.test(module.context),
+          minChunks: 1,
+          minSize: 0
+        }
+      }
+    }
+  }
 }

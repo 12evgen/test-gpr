@@ -140,7 +140,7 @@ if (DEV) {
       console.log(error.stack)
     }
     const clientStats = stats.toJson().children[0]
-    const serverRender = require('../buildServer/main.js').default
+    const serverRender = require('../tmp/buildServer/main.js').default
 
     app.use(publicPath, express.static(outputPath))
     app.use(serverRender({ clientStats }))
