@@ -1,0 +1,49 @@
+.pokemons-view {
+  width: 100%;
+}
+
+.search-input {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.view__options {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  padding-right: 5px;
+  padding-left: 5px;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
+
+  .ant-select {
+    width: 100%;
+  }
+}
+
+.view-options__filter {
+  flex: 1 0 0;
+  margin-right: 10px;
+  padding-bottom: 10px;
+
+  @media (max-width: 767px) {
+    flex: 0 0 0;
+    margin-right: 0;
+  }
+}
+
+.view-options__types {
+  flex: 1 0 45%;
+
+  @media (max-width: 767px) {
+    flex: 0 0 0;
+  }
+}
+
+.view__pagination {
+  padding-top: 30px;
+}

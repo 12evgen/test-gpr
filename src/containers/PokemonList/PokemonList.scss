@@ -1,0 +1,9 @@
+.pokemon-list {
+  justify-content: center;
+
+  .wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+  }
+}

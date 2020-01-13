@@ -1,0 +1,20 @@
+// Initial styling
+
+body {
+  &.initializing,
+  &.preloading {
+    overflow: hidden;
+
+    // Logo
+    &:after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url(/public/img/logos/logo.svg) center center / 250px no-repeat #fff;
+      z-index: 99999;
+    }
+  }
+}
