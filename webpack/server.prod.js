@@ -4,7 +4,7 @@ const webpack = require('webpack')
 const res = p => path.resolve(__dirname, p)
 
 const entry = res('../server/render.js')
-const output = res('../tmp/buildServer')
+const output = res('../build/buildServer')
 
 module.exports = {
   name: 'server',
@@ -14,7 +14,8 @@ module.exports = {
   output: {
     path: output,
     filename: 'main.js',
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -31,14 +32,20 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: '[name]__[local]--[hash:base64:5]',
-              exportOnlyLocals: true
+              exportOnlyLocals: true,
+              localIdentName: '[name]__[local]--[hash:base64:5]'
             }
           },
           {
             loader: 'sass-loader'
           }
         ]
+      },
+      {
+        test: /\.(jpg|png|gif|svg|ico)$/,
+        use: [{
+          loader: 'url-loader'
+        }]
       }
     ]
   },

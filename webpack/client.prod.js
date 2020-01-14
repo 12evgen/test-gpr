@@ -11,7 +11,7 @@ module.exports = {
   output: {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
-    path: path.resolve(__dirname, '../tmp/buildClient'),
+    path: path.resolve(__dirname, '../build/buildClient'),
     publicPath: '/'
   },
   stats: 'verbose',
@@ -25,13 +25,7 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          {
-            loader: ExtractCssChunks.loader,
-            options: {
-              hot: true,
-              reloadAll: true
-            }
-          },
+          ExtractCssChunks.loader,
           {
             loader: 'css-loader',
             options: {
@@ -71,12 +65,12 @@ module.exports = {
           name: 'vendor',
           priority: 1,
           test: /\.css$/,
-          chunks: chunk => chunk.name == 'main',
+          chunks: chunk => chunk.name === 'main',
           enforce: true
         },
         vendor: {
           name: 'vendor',
-          chunks: chunk => chunk.name == 'main',
+          chunks: chunk => chunk.name === 'main',
           reuseExistingChunk: true,
           priority: 1,
           test: module => /[\\/]node_modules[\\/]/.test(module.context),

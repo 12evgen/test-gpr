@@ -7,7 +7,7 @@ const res = p => path.resolve(__dirname, p)
 
 const nodeModules = res('../node_modules')
 const entry = res('../server/render.js')
-const output = res('../tmp/buildServer')
+const output = res('../build/buildServer')
 
 // if you're specifying externals to leave unbundled, you need to tell Webpack
 // to still bundle `react-universal-component`, `webpack-flush-chunks` and
@@ -73,7 +73,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.ts', '.tsx', '.css', '.scss']
+    extensions: ['.js', '.css', '.scss']
   },
   plugins: [
     new WriteFilePlugin(),

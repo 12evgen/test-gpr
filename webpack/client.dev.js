@@ -18,7 +18,7 @@ module.exports = {
   output: {
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
-    path: path.resolve(__dirname, '../tmp/buildClient'),
+    path: path.resolve(__dirname, '../build/buildClient'),
     publicPath: '/'
   },
   cache: false,
@@ -63,7 +63,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.ts', '.tsx', '.css', '.scss']
+    extensions: ['.js', '.css', '.scss']
   },
   plugins: [
     new WriteFilePlugin(),
@@ -88,12 +88,12 @@ module.exports = {
           name: 'vendor',
           priority: 1,
           test: /\.css$/,
-          chunks: chunk => chunk.name == 'main',
+          chunks: chunk => chunk.name === 'main',
           enforce: true
         },
         vendor: {
           name: 'vendor',
-          chunks: chunk => chunk.name == 'main',
+          chunks: chunk => chunk.name === 'main',
           reuseExistingChunk: true,
           priority: 1,
           test: module => /[\\/]node_modules[\\/]/.test(module.context),
