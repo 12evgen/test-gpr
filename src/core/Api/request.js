@@ -41,7 +41,7 @@ export default async function request (url, options) {
       url = url + (newOptions.data && Object.keys(newOptions.data).length ? '?' + convertArguments(newOptions.data) : '')
     }
 
-    const response = await axios(url, newOptions)
+    const response = await axios(`${process.env.API_POKEMON}${url}`, newOptions)
     if (response.status === 401) {
       return
     }

@@ -13,6 +13,7 @@ app.disable('x-powered-by')
 
 app.use(compression())
 
+/*
 app.use('/api/v2/', (req, res) => {
   proxy.web(
     req,
@@ -23,6 +24,7 @@ app.use('/api/v2/', (req, res) => {
     }
   )
 })
+*/
 
 app.use(allToGet())
 app.use(cookieParser())

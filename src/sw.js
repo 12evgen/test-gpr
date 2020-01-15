@@ -3,14 +3,14 @@
 // The `serviceWorkerOption` variable is coming from the `serviceworker-webpack-plugin`
 // const {assets: BUILD_ASSETS} = serviceWorkerOption
 
-const CACHE_NAME_PREFIX = 'topfashion-'
+const CACHE_NAME_PREFIX = 'pokemon-'
 const CACHE_NAME = `${CACHE_NAME_PREFIX}v1`
 
 const OFFLINE_PAGE = new Request('/', {
   headers: { 'x-offline-mode': 'true' }
 })
 const OFFLINE_ASSETS = [
-  '/public/img/logos/shop-logo.svg',
+  '/public/img/logos/logo.svg',
   '/favicon-32x32.png',
   '/favicon-16x16.png'
 ]
