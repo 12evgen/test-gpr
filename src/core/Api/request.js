@@ -1,6 +1,5 @@
 import axios from 'axios'
 import isPlainObject from 'lodash/isPlainObject'
-import { Base64 } from 'js-base64'
 
 /**
  * Requests a URL, returning a promise.
@@ -17,9 +16,6 @@ export default async function request (url, options) {
     }
     const newOptions = { ...defaultOptions, ...options }
 
-    newOptions.headers = {
-      Authorization: `Basic ${Base64.encode(`${process.env.API_KEY}:${process.env.API_SECRET}`)}`
-    }
     if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
       if (typeof window !== 'undefined' && !(newOptions.data instanceof window.FormData)) {
         newOptions.headers = {
@@ -45,7 +41,7 @@ export default async function request (url, options) {
       url = url + (newOptions.data && Object.keys(newOptions.data).length ? '?' + convertArguments(newOptions.data) : '')
     }
 
-    const response = await axios(`https://localhost:8443${url}`, newOptions)
+    const response = await axios(url, newOptions)
     if (response.status === 401) {
       return
     }

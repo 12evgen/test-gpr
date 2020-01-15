@@ -1,19 +1,22 @@
 import React from 'react'
 import { Provider, useStaticRendering } from 'mobx-react'
-import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
-import { createMemoryHistory } from 'history'
-import { flushChunkNames } from 'react-universal-component/server'
+import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import flushChunks from 'webpack-flush-chunks'
-import Head from './helpers/Head'
-import Body from './helpers/Body'
+import Head from '../../../helpers/Head'
+import Body from '../../../helpers/Body'
+import { createMemoryHistory } from 'history'
+import { flushChunkNames } from "react-universal-component/server"
+import allStore from '../../../core/Store'
+import App from '../../../decorators'
 
-import allStore from '../src/core/Store'
-import App from '../src/decorators'
+/**
+ * Middleware to render initial page for the application
+ */
+export default ({clientStats})  => (req, res) => {
+  // To prevent memory leaks on server when calling observer (https://github.com/mobxjs/mobx-react/issues/140)
+  useStaticRendering(true)
 
-useStaticRendering(true)
-
-export default ({ clientStats }) => (req, res) => {
   const history = createMemoryHistory({ initialEntries: [req.path] })
   const context = {}
 
@@ -60,3 +63,4 @@ export default ({ clientStats }) => (req, res) => {
   res.write(`${bodyHtml}</html>`)
   res.end()
 }
+

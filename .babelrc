@@ -35,15 +35,19 @@
     "react-hot-loader/babel"
   ],
   "env": {
+    "production": {
+      "only": [
+        "src"
+      ],
+      "plugins": [
+        "transform-react-remove-prop-types",
+        "@babel/plugin-transform-react-constant-elements",
+        "@babel/plugin-transform-react-inline-elements"
+      ]
+    },
     "development": {
       "plugins": [
-        "react-hot-loader/babel",
-        [
-          "react-intl",
-          {
-            "messagesDir": "./tmp/extractedMessages"
-          }
-        ]
+        "react-hot-loader/babel"
       ]
     }
   }

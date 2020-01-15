@@ -1,29 +1,20 @@
+#!/usr/bin/env node
+
 require('dotenv').config()
-require('colors')
-const path = require('path')
-const express = require('express')
 const webpack = require('webpack')
-const noFavicon = require('express-no-favicons')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const webpackHotServerMiddleware = require('webpack-hot-server-middleware')
-const httpProxy = require('http-proxy')
-const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
 const https = require('https')
+const path = require('path')
+
 const clientConfig = require('../webpack/client.dev')
 const serverConfig = require('../webpack/server.dev')
-const clientConfigProd = require('../webpack/client.prod')
-const serverConfigProd = require('../webpack/server.prod')
 
-const proxy = httpProxy.createProxyServer()
-
-const { publicPath } = clientConfig.output
-const outputPath = clientConfig.output.path
-const DEV = process.env.NODE_ENV === 'development'
-const app = express()
-app.use(noFavicon())
-app.disable('x-powered-by')
+const publicPath = clientConfig.output.publicPath
+const compiler = webpack([clientConfig, serverConfig])
+const clientCompiler = compiler.compilers[0]
+const options = { publicPath, stats: { colors: true } }
 
 // To make it trusted by Chrome browser you should copy the certificate into a file *.crt and then import it in Chrome
 // (Settings > Manage certificates > Authorities)
@@ -82,69 +73,46 @@ rpLlgdytPG1YDUGdwnZiSmI=
 -----END PRIVATE KEY-----
 `
 
-const options = {
-  key: serverKey,
-  cert: serverCrt
-}
+const DEBUG_MODE = process.env.DEBUG_MODE === 'true'
+
+const webpackDevMiddlewareCreated = webpackDevMiddleware(compiler, options)
+const webpackHotMiddlewareCreated = webpackHotMiddleware(clientCompiler)
+const webpackHotServerMiddlewareCreated = webpackHotServerMiddleware(compiler)
 
 let isBuilt = false
 
-app.use('/api/v2/', (req, res) => {
-  proxy.web(
-    req,
-    res,
-    { target: process.env.API_POKEMON, changeOrigin: true, secure: false },
-    proxyError => {
-      res.status(500).json({ error: 'ProxyException', details: proxyError })
-    }
-  )
-})
-
-app.use(
-  '/',
-  express.static(path.resolve(__dirname, process.env.STATIC_PATH))
-)
-
-app.use(
-  '/public',
-  express.static(path.resolve(__dirname, process.env.PUBLIC_PATH))
-)
-
-app.use(cookieParser())
-app.use(bodyParser.json())
-
-const done = () =>
-  !isBuilt &&
-  https.createServer(options, app).listen(process.env.HTTPS_PORT, () => {
+compiler.plugin('done', () => {
+  if (!isBuilt) {
     isBuilt = true
-    console.log(
-      `BUILD COMPLETE -- Listening @ https://localhost:${process.env.HTTPS_PORT}/`
-        .magenta
-    )
-  })
 
-if (DEV) {
-  const compiler = webpack([clientConfig, serverConfig])
-  const clientCompiler = compiler.compilers[0]
-  const options = { publicPath, stats: { colors: true } }
-  const devMiddleware = webpackDevMiddleware(compiler, options)
+    //const app = require('../tmp/server/app.js').app
+    const app = require('../src/server').app
 
-  app.use(devMiddleware)
-  app.use(webpackHotMiddleware(clientCompiler))
-  app.use(webpackHotServerMiddleware(compiler))
+    app.use(webpackDevMiddlewareCreated)
+    app.use(webpackHotMiddlewareCreated)
+    app.use(webpackHotServerMiddlewareCreated)
 
-  devMiddleware.waitUntilValid(done)
-} else {
-  webpack([clientConfigProd, serverConfigProd]).run((error, stats) => {
-    if (error) {
-      console.log(error.stack)
+    // Error handler
+    app.use((err, req, res, next) => {
+      // eslint-disable-next-line no-console
+      console.error(DEBUG_MODE ? err : '' + err)
+    })
+
+    if (process.env.HTTPS === 'true') {
+      const options = {
+        key: serverKey,
+        cert: serverCrt
+      }
+
+      https.createServer(options, app).listen(process.env.HTTPS_PORT, () => {
+        // eslint-disable-next-line no-console
+        console.log(`Listening @ https://localhost:${process.env.HTTPS_PORT}/`)
+      })
+    } else {
+      app.listen(process.env.APP_PORT, () => {
+        // eslint-disable-next-line no-console
+        console.log(`Listening @ http://localhost:${process.env.APP_PORT}/`)
+      })
     }
-    const clientStats = stats.toJson().children[0]
-    const serverRender = require('../tmp/buildServer/main.js').default
-
-    app.use(publicPath, express.static(outputPath))
-    app.use(serverRender({ clientStats }))
-
-    done()
-  })
-}
+  }
+})

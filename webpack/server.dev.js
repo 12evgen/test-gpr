@@ -1,13 +1,15 @@
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
+const Dotenv = require('dotenv-webpack')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 
 const res = p => path.resolve(__dirname, p)
 
 const nodeModules = res('../node_modules')
-const entry = res('../server/render.js')
-const output = res('../tmp/buildServer')
+const entry = res('../src/server/middlewares/render/index.js')
+const entryApp = res('../src/server/index.js')
+const output = res('../tmp/server')
 
 // if you're specifying externals to leave unbundled, you need to tell Webpack
 // to still bundle `react-universal-component`, `webpack-flush-chunks` and
@@ -28,7 +30,10 @@ module.exports = {
   devtool: 'source-map',
   target: 'node',
   mode: 'development',
-  entry: ['regenerator-runtime/runtime.js', entry],
+  entry: {
+    main: ['babel-polyfill', entry],
+    app: ['babel-polyfill', entryApp]
+  },
   externals,
   output: {
     path: output,
@@ -73,10 +78,14 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.ts', '.tsx', '.css', '.scss']
+    extensions: ['.js', '.css', '.scss']
   },
   plugins: [
     new WriteFilePlugin(),
+    new Dotenv({
+      path: path.resolve(__dirname, '../.env'),
+      safe: false
+    }),
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
     }),

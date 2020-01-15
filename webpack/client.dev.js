@@ -10,15 +10,17 @@ module.exports = {
   target: 'web',
   devtool: 'inline-source-map',
   mode: 'development',
-  entry: [
-    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
-    'react-hot-loader/patch',
-    path.resolve(__dirname, '../src/index.js')
-  ],
+  entry: {
+    main: [
+      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
+      'react-hot-loader/patch',
+      path.resolve(__dirname, '../src/index.js')
+    ]
+  },
   output: {
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
-    path: path.resolve(__dirname, '../tmp/buildClient'),
+    path: path.resolve(__dirname, '../tmp/client'),
     publicPath: '/'
   },
   cache: false,
@@ -63,7 +65,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.ts', '.tsx', '.css', '.scss']
+    extensions: ['.js', '.css', '.scss']
   },
   plugins: [
     new WriteFilePlugin(),
@@ -72,13 +74,15 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('development')
-      }
+      'process.env.NODE_ENV': JSON.stringify('development')
     }),
-    new Dotenv(),
+    new Dotenv({
+      path: path.resolve(__dirname, '..', '.env'),
+      safe: false
+    }),
     new ServiceWorkerWebpackPlugin({
-      entry: path.resolve(__dirname, '../src/sw.js')
+      entry: path.resolve(__dirname, '../src/sw.js'),
+      excludes: ['*hot-update*', '**/*.map', '**/stats.json']
     })
   ],
   optimization: {
@@ -88,12 +92,12 @@ module.exports = {
           name: 'vendor',
           priority: 1,
           test: /\.css$/,
-          chunks: chunk => chunk.name == 'main',
+          chunks: chunk => chunk.name === 'main',
           enforce: true
         },
         vendor: {
           name: 'vendor',
-          chunks: chunk => chunk.name == 'main',
+          chunks: chunk => chunk.name === 'main',
           reuseExistingChunk: true,
           priority: 1,
           test: module => /[\\/]node_modules[\\/]/.test(module.context),
