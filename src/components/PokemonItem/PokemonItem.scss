@@ -36,14 +36,14 @@
   }
 }
 
-@media (max-width: 767px) and (min-width: 480px) {
+@media (max-width: 767px) and (min-width: 575px) {
   .pokemon-item {
     width: calc(50% - 12px);
     margin: 6px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 575px) {
   .pokemon-item {
     width: calc(50% - 12px);
     margin: 6px;

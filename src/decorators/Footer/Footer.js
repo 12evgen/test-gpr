@@ -8,7 +8,10 @@ const Footer = () => {
 
   return (
     <div className='site-footer'>
-      <Footer style={{ textAlign: 'center' }}>Pokemon App ©2020 Created by Popov Evgeniy</Footer>
+      <Footer style={{ textAlign: 'center' }}>
+        <span>Pokemon App ©2020 </span>
+        <span>Created by Popov Evgeniy</span>
+      </Footer>
     </div>
   )
 }

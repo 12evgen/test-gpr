@@ -38,7 +38,7 @@ export default ({clientStats})  => (req, res) => {
   const fontawesomeCssIndex = extendedStylesheets.push(null) - 1
 
   // Add "fontawesome.css" file
-  extendedStylesheets[fontawesomeCssIndex] = `public/css/fontawesome.css`
+  extendedStylesheets[fontawesomeCssIndex] = `css/fontawesome.css`
 
   const headHtml = renderToStaticMarkup(
     <Head
