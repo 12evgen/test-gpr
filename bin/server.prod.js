@@ -34,7 +34,7 @@ app.use((err, req, res, next) => {
   console.error(DEBUG_MODE ? err : '' + err)
 })
 
-app.listen(process.env.APP_PORT || process.env.PORT || 5000, () => {
+app.listen(process.env.PORT || process.env.APP_PORT || 5000, () => {
   // eslint-disable-next-line no-console
   console.log(`Listening @ http://localhost:${process.env.APP_PORT}/`)
 })
