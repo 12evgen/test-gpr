@@ -6,13 +6,13 @@
 const path = require('path')
 const ora = require('ora')
 const fse = require('fs-extra')
-const {exec} = require('child_process')
+const { exec } = require('child_process')
 
-const buildFolder = 'build'
+const buildFolder = 'build_prod'
 const staticFiles = [
   'README.md',
   'LICENSE',
-  'yarn.lock',
+  'package-lock.json',
   ['bin/server.prod.js', 'index.js']
 ]
 
@@ -185,7 +185,7 @@ function getProcessArgs () {
 }
 
 function runNpmInstall (callback) {
-  runCmd(`yarn install`, callback)
+  runCmd(`npm install`, callback)
 }
 
 function removeFolder (folderPath, callback) {

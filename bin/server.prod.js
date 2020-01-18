@@ -2,7 +2,7 @@
 
 require('dotenv').config()
 const express = require('express')
-const {app} = require('./server/app.js')
+const app = require('./server/app.js').app
 const path = require('path')
 
 const publicPath = '/'
@@ -26,7 +26,7 @@ app.use(publicPath, express.static(outputPath, {
   }
 }))
 
-app.use(serverRender({clientStats}))
+app.use(serverRender({ clientStats }))
 
 // Error handler
 app.use((err, req, res, next) => {

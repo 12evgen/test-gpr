@@ -9,7 +9,9 @@ const res = p => path.resolve(__dirname, p)
 const nodeModules = res('../node_modules')
 const entry = res('../src/server/middlewares/render/index.js')
 const entryApp = res('../src/server/index.js')
-const output = res('../tmp/server')
+const output = res('../build_dev/server')
+
+const BUILT_ASSETS_FOLDER = '/'
 
 // if you're specifying externals to leave unbundled, you need to tell Webpack
 // to still bundle `react-universal-component`, `webpack-flush-chunks` and
@@ -30,6 +32,10 @@ module.exports = {
   devtool: 'source-map',
   target: 'node',
   mode: 'development',
+  node: {
+    __dirname: false,
+    __filename: false
+  },
   entry: {
     main: ['babel-polyfill', entry],
     app: ['babel-polyfill', entryApp]
@@ -39,7 +45,7 @@ module.exports = {
     path: output,
     filename: '[name].js',
     libraryTarget: 'commonjs2',
-    publicPath: '/'
+    publicPath: BUILT_ASSETS_FOLDER
   },
   module: {
     rules: [
@@ -90,9 +96,7 @@ module.exports = {
       maxChunks: 1
     }),
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('development')
-      }
+      'process.env.NODE_ENV': JSON.stringify('development')
     })
   ]
 }

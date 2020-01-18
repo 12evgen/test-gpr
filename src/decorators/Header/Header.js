@@ -7,6 +7,7 @@ class Header extends Component {
     return (
       <div className='site-header'>
         <Link to='/' className='title'>Pokedox</Link>
+        <img src='/assets/img/pokemon-logo.png' alt='Pokemon' />
       </div>
     )
   }

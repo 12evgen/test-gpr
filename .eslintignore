@@ -2,5 +2,5 @@
 node_modules/
 
 # Build
-build/
-tmp/
+build_dev/
+build_prod/

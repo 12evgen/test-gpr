@@ -6,8 +6,8 @@ buildServer
 .idea
 .DS_Store
 .history
-tmp/
-build/
+build_dev/
+build_prod/
 
 # Logs
 npm-debug.log*

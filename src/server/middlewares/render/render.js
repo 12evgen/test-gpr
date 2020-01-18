@@ -6,14 +6,14 @@ import flushChunks from 'webpack-flush-chunks'
 import Head from '../../../helpers/Head'
 import Body from '../../../helpers/Body'
 import { createMemoryHistory } from 'history'
-import { flushChunkNames } from "react-universal-component/server"
+import { flushChunkNames } from 'react-universal-component/server'
 import allStore from '../../../core/Store'
 import App from '../../../decorators'
 
 /**
  * Middleware to render initial page for the application
  */
-export default ({clientStats})  => (req, res) => {
+export default ({ clientStats }) => (req, res) => {
   // To prevent memory leaks on server when calling observer (https://github.com/mobxjs/mobx-react/issues/140)
   useStaticRendering(true)
 
@@ -38,7 +38,7 @@ export default ({clientStats})  => (req, res) => {
   const fontawesomeCssIndex = extendedStylesheets.push(null) - 1
 
   // Add "fontawesome.css" file
-  extendedStylesheets[fontawesomeCssIndex] = `css/fontawesome.css`
+  extendedStylesheets[fontawesomeCssIndex] = `assets/css/fontawesome.css`
 
   const headHtml = renderToStaticMarkup(
     <Head
@@ -63,4 +63,3 @@ export default ({clientStats})  => (req, res) => {
   res.write(`${bodyHtml}</html>`)
   res.end()
 }
-

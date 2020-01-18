@@ -13,12 +13,12 @@ module.exports = {
   devtool: 'source-map',
   mode: 'production',
   entry: {
-    main: [path.resolve(__dirname, '../src/index.js')]
+    main: [path.resolve(__dirname, '../src/client.js')]
   },
   output: {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
-    path: path.resolve(__dirname, '../build/client'),
+    path: path.resolve(__dirname, '../build_prod/client'),
     publicPath: '/'
   },
   node: {
@@ -90,12 +90,12 @@ module.exports = {
           name: 'vendor',
           priority: 1,
           test: /\.css$/,
-          chunks: chunk => chunk.name == 'main',
+          chunks: chunk => chunk.name === 'main',
           enforce: true
         },
         vendor: {
           name: 'vendor',
-          chunks: chunk => chunk.name == 'main',
+          chunks: chunk => chunk.name === 'main',
           reuseExistingChunk: true,
           priority: 1,
           test: module => /[\\/]node_modules[\\/]/.test(module.context),

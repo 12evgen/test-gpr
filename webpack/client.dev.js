@@ -5,6 +5,13 @@ const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 
+const res = (p) => path.resolve(__dirname, p)
+const entryFile = res('../src/client.js')
+const outputFolder = res('../build_dev/client')
+const outputFile = '[name].js'
+
+const BUILT_ASSETS_FOLDER = '/'
+
 module.exports = {
   name: 'client',
   target: 'web',
@@ -14,14 +21,14 @@ module.exports = {
     main: [
       'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
       'react-hot-loader/patch',
-      path.resolve(__dirname, '../src/index.js')
+      entryFile
     ]
   },
   output: {
-    filename: '[name].js',
-    chunkFilename: '[name].chunk.js',
-    path: path.resolve(__dirname, '../tmp/client'),
-    publicPath: '/'
+    filename: outputFile,
+    chunkFilename: outputFile,
+    path: outputFolder,
+    publicPath: BUILT_ASSETS_FOLDER
   },
   cache: false,
   module: {
@@ -86,6 +93,9 @@ module.exports = {
     })
   ],
   optimization: {
+    runtimeChunk: {
+      name: 'bootstrap'
+    },
     splitChunks: {
       cacheGroups: {
         styles: {

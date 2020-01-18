@@ -6,7 +6,7 @@ const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const webpackHotServerMiddleware = require('webpack-hot-server-middleware')
 const https = require('https')
-const path = require('path')
+// const path = require('path')
 
 const clientConfig = require('../webpack/client.dev')
 const serverConfig = require('../webpack/server.dev')
@@ -85,8 +85,7 @@ compiler.plugin('done', () => {
   if (!isBuilt) {
     isBuilt = true
 
-    //const app = require('../tmp/server/app.js').app
-    const app = require('../src/server').app
+    const app = require('../build_dev/server/app.js').app
 
     app.use(webpackDevMiddlewareCreated)
     app.use(webpackHotMiddlewareCreated)
