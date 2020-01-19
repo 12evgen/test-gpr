@@ -13,12 +13,12 @@ module.exports = {
   devtool: 'source-map',
   mode: 'production',
   entry: {
-    main: [path.resolve(__dirname, '../src/client.js')]
+    main: [path.resolve(__dirname, '../src/client/client.js')]
   },
   output: {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
-    path: path.resolve(__dirname, '../build_prod/client'),
+    path: path.resolve(__dirname, '../_build_prod/client'),
     publicPath: '/'
   },
   node: {
@@ -79,7 +79,7 @@ module.exports = {
       safe: false
     }),
     new ServiceWorkerWebpackPlugin({
-      entry: path.resolve(__dirname, '../src/sw.js'),
+      entry: path.resolve(__dirname, '../src/client/sw.js'),
       excludes: ['*hot-update*', '**/*.map', '**/stats.json']
     })
   ],

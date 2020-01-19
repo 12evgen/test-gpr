@@ -6,8 +6,8 @@ const Dotenv = require('dotenv-webpack')
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 
 const res = (p) => path.resolve(__dirname, p)
-const entryFile = res('../src/client.js')
-const outputFolder = res('../build_dev/client')
+const entryFile = res('../src/client/client.js')
+const outputFolder = res('../_build_dev/client')
 const outputFile = '[name].js'
 
 const BUILT_ASSETS_FOLDER = '/'
@@ -88,7 +88,7 @@ module.exports = {
       safe: false
     }),
     new ServiceWorkerWebpackPlugin({
-      entry: path.resolve(__dirname, '../src/sw.js'),
+      entry: path.resolve(__dirname, '../src/client/sw.js'),
       excludes: ['*hot-update*', '**/*.map', '**/stats.json']
     })
   ],

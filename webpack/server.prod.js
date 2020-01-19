@@ -8,7 +8,7 @@ const res = p => path.resolve(__dirname, p)
 const nodeModules = res('../node_modules')
 const entry = res('../src/server/middlewares/render/index.js')
 const entryApp = res('../src/server/index.js')
-const output = res('../build_prod/server')
+const output = res('../_build_prod/server')
 
 const BUILT_ASSETS_FOLDER = '/'
 

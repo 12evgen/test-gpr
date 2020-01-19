@@ -85,7 +85,7 @@ compiler.plugin('done', () => {
   if (!isBuilt) {
     isBuilt = true
 
-    const app = require('../build_dev/server/app.js').app
+    const app = require('../_build_dev/server/app.js').app
 
     app.use(webpackDevMiddlewareCreated)
     app.use(webpackHotMiddlewareCreated)

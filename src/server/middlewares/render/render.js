@@ -3,12 +3,12 @@ import { Provider, useStaticRendering } from 'mobx-react'
 import { StaticRouter } from 'react-router'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import flushChunks from 'webpack-flush-chunks'
-import Head from '../../../helpers/Head'
-import Body from '../../../helpers/Body'
+import Head from '../../helpers/Head'
+import Body from '../../helpers/Body'
 import { createMemoryHistory } from 'history'
 import { flushChunkNames } from 'react-universal-component/server'
-import allStore from '../../../core/Store'
-import App from '../../../decorators'
+import allStore from '../../../client/core/Store'
+import App from '../../../client/decorators'
 
 /**
  * Middleware to render initial page for the application

@@ -7,6 +7,8 @@ const path = require('path')
 
 const publicPath = '/'
 const outputPath = path.resolve(__dirname, 'client')
+const assets = path.resolve(__dirname, 'client/assets')
+const staticFiles = path.resolve(__dirname, 'server/static')
 
 const clientStats = require('./client/stats.json')
 const serverRender = require('./server/main.js').default
@@ -15,6 +17,10 @@ const serverRender = require('./server/main.js').default
 const hashedFilesRegexp = /[^/.]\.[0-9a-f]{5,}\.(?:js|css|json)(?:\.map)?$/
 
 const DEBUG_MODE = process.env.DEBUG_MODE === 'true'
+
+app.use('/', express.static(staticFiles))
+
+app.use('/assets', express.static(assets))
 
 app.use(publicPath, express.static(outputPath, {
   maxAge: '2m',
