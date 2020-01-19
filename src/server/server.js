@@ -30,6 +30,7 @@ app.use(allToGet())
 app.use(cookieParser())
 app.use(bodyParser.json())
 
+// TODO clear for prod build
 // Assets
 app.use('/assets', express.static(path.join(__dirname, '..', process.env.PUBLIC_PATH), {
   maxAge: '2m' // 2 minutes
