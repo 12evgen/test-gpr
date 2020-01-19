@@ -4,6 +4,7 @@ const WriteFilePlugin = require('write-file-webpack-plugin') // here so you can 
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
+const postcssPresetEnv = require('postcss-preset-env')
 
 const res = (p) => path.resolve(__dirname, p)
 const entryFile = res('../src/client/client.js')
@@ -56,11 +57,18 @@ module.exports = {
             }
           },
           {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: () => [postcssPresetEnv()]
+            }
+          },
+          {
             loader: 'sass-loader',
             options: {
               sourceMap: true
             }
-          }
+          },
         ]
       },
       {

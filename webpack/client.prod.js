@@ -6,6 +6,7 @@ const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 const StatsPlugin = require('stats-webpack-plugin')
+const postcssPresetEnv = require('postcss-preset-env')
 
 module.exports = {
   name: 'client',
@@ -46,6 +47,13 @@ module.exports = {
             options: {
               sourceMap: true,
               importLoaders: 1
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: () => [postcssPresetEnv()]
             }
           },
           {

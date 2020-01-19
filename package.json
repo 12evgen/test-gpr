@@ -114,6 +114,8 @@
     "lint-staged": "^9.2.1",
     "node-sass": "^4.13.1",
     "ora": "2.x",
+    "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.7.0",
     "prettier": "^1.19.1",
     "react-hot-loader": "^4.12.18",
     "rimraf": "^2.6.3",

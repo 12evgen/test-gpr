@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
 const WriteFilePlugin = require('write-file-webpack-plugin')
+const postcssPresetEnv = require('postcss-preset-env')
 
 const res = p => path.resolve(__dirname, p)
 
@@ -63,6 +64,13 @@ module.exports = {
               modules: true,
               localIdentName: '[name]__[local]--[hash:base64:5]',
               exportOnlyLocals: true
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: () => [postcssPresetEnv()]
             }
           },
           {
