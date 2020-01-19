@@ -7,7 +7,7 @@ class Home extends Component {
     return (
       <React.Fragment>
         <Helmet>
-          <title>Home age</title>
+          <title>Home page</title>
         </Helmet>
         <PokemonView />
       </React.Fragment>
