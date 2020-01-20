@@ -19,7 +19,7 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "rimraf _build_dev && node bin/server.dev.js",
-    "prod": "rimraf _build_prod && node bin/build && PUBLIC_PATH=../assets/public STATIC_PATH=../assets/static NODE_ENV=production node _build_prod/server.prod.js",
+    "prod": "node bin/build && cross-env PUBLIC_PATH=../assets/public STATIC_PATH=../assets/static NODE_ENV=production node _build_prod/server.prod.js",
     "build": "node bin/build",
     "format": "prettier --single-quote --semi=false --write \"{src,server,webpack}/**/*.js\" && eslint --fix src server webpack",
     "lint:css": "stylelint src/**/*.scss",
@@ -120,6 +120,7 @@
     "react-hot-loader": "^4.12.18",
     "rimraf": "^2.6.3",
     "sass-loader": "8.0.0",
+    "shelljs": "^0.8.3",
     "stats-webpack-plugin": "^0.7.0",
     "stylelint": "^12.0.0",
     "stylelint-config-prettier": "^8.0.0",
