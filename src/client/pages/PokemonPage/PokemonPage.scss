@@ -150,14 +150,14 @@
   }
 
   &::after {
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
     content: '\f061';
     position: absolute;
     top: 7%;
     right: -18px;
     display: block;
+    font-weight: 900;
     font-size: 50px;
+    font-family: "Font Awesome 5 Free";
     color: #ccc;
 
     @media (max-width: 767px) {

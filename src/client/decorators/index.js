@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { hot } from 'react-hot-loader/root'
 import { Switch, Route } from 'react-router-dom'
 import { observer } from 'mobx-react'
