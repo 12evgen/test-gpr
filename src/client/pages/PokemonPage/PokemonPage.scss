@@ -67,9 +67,9 @@ $pokemon-color: #ccc !default;
 }
 
 .pokemon-detais__avatar {
-  text-align: center;
   width: 350px;
   height: 100%;
+  text-align: center;
   border: 1px solid $pokemon-color;
 
   img {
@@ -197,7 +197,7 @@ $pokemon-color: #ccc !default;
     display: block;
     font-weight: 900;
     font-size: 50px;
-    font-family: "Font Awesome 5 Free";
+    font-family: 'Font Awesome 5 Free';
     color: #9e6581;
 
     @media (max-width: 767px) {
@@ -222,13 +222,13 @@ $pokemon-color: #ccc !default;
 
   img {
     width: 96px;
-    box-shadow: 1px 1px 6px 0 $pokemon-color;
     border-radius: 100%;
+    box-shadow: 1px 1px 6px 0 $pokemon-color;
   }
 
   .pokemon-detais__evolution-link {
-    text-transform: uppercase;
     padding-top: 5px;
+    text-transform: uppercase;
   }
 }
 

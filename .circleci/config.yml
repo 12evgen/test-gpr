@@ -35,3 +35,5 @@ jobs:
 
       # run tests!
       - run: npm run lint:css
+
+      - run: npm run lint:js

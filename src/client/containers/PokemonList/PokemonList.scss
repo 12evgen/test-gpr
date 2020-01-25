@@ -2,8 +2,8 @@
   justify-content: center;
 
   .wrapper {
-    justify-content: left;
     display: grid;
+    justify-content: left;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
 
