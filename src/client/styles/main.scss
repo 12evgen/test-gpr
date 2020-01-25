@@ -79,7 +79,15 @@ html {
 }
 
 h3 {
-  text-decoration: underline;
+  display: inline-block;
+  font-size: 18px;
+
+  &::after {
+    content: '';
+    border-bottom: 3px solid #000c17;
+    display: block;
+    width: 110%;
+  }
 }
 
 .box-center {

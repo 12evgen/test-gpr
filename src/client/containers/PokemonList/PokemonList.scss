@@ -2,8 +2,25 @@
   justify-content: center;
 
   .wrapper {
-    display: flex;
-    flex-wrap: wrap;
     justify-content: left;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+
+    @media (max-width: 1199px) and (min-width: 992px) {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    @media (max-width: 991px) and (min-width: 768px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (max-width: 767px) and (min-width: 575px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: 575px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }
