@@ -18,6 +18,8 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
   lint:
+    docker:
+      - image: node
     working_directory: ~/repo
     steps:
       - checkout
