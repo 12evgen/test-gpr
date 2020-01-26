@@ -11,9 +11,18 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      - run: npm install
-      - run: npm run lint:css
-      - run: npm run lint:js
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: lint:css
+          command: npm run lint:css
+      - run:
+          name: lint:js
+          command: npm run lint:js
+      - run:
+          name: Build frontend
+          command: npm run build
       - save_cache:
           paths:
             - node_modules
@@ -26,9 +35,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: Build Pokemon Frontend App
-          command: npm run build
       - run:
           name: Build Pokemon Docker Image
           command: docker build -t 12evgen/pokemon:latest .
