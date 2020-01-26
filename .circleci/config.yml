@@ -68,7 +68,7 @@ workflows:
               only: master
       - lint:
           requires:
-            - build
+            - build_frontend
           filters:
             branches:
               only: master
@@ -92,7 +92,7 @@ workflows:
               ignore: master
       - lint:
           requires:
-            - build
+            - build_frontend
           filters:
             branches:
               ignore: master
