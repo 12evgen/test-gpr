@@ -26,6 +26,9 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: Build Pokemon Frontend App
+          command: npm run build
+      - run:
           name: Build Pokemon Docker Image
           command: docker build -t 12evgen/pokemon:latest .
       - deploy:
