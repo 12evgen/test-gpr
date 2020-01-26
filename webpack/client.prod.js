@@ -7,6 +7,8 @@ const Dotenv = require('dotenv-webpack')
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 const StatsPlugin = require('stats-webpack-plugin')
 const postcssPresetEnv = require('postcss-preset-env')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const chalk = require('chalk')
 
 module.exports = {
   name: 'client',
@@ -89,6 +91,10 @@ module.exports = {
     new ServiceWorkerWebpackPlugin({
       entry: path.resolve(__dirname, '../src/client/sw.js'),
       excludes: ['*hot-update*', '**/*.map', '**/stats.json']
+    }),
+    new ProgressBarPlugin({
+      format: '  build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
+      clear: false
     })
   ],
   optimization: {
