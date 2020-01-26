@@ -12,19 +12,12 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run: npm install
+      - run: npm run lint:css
+      - run: npm run lint:js
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
-  lint:
-    docker:
-      - image: node
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run: npm run lint:css
-      - run: npm run lint:js
 
   build_docker:
     docker:
@@ -68,12 +61,6 @@ workflows:
           filters:
             branches:
               only: master
-      - lint:
-          requires:
-            - build_frontend
-          filters:
-            branches:
-              only: master
       - build_docker:
           filters:
             branches:
@@ -81,7 +68,6 @@ workflows:
       - deploy:
           requires:
             - build_frontend
-            - lint
           filters:
             branches:
               only: master
@@ -92,16 +78,9 @@ workflows:
           filters:
             branches:
               ignore: master
-      - lint:
-          requires:
-            - build_frontend
-          filters:
-            branches:
-              ignore: master
       - build_docker:
           requires:
             - build_frontend
-            - lint
           filters:
             branches:
               ignore: master
