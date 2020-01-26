@@ -30,16 +30,20 @@ app.use(allToGet())
 app.use(cookieParser())
 app.use(bodyParser.json())
 
-// TODO clear for prod build
 // Assets
-app.use('/assets', express.static(path.join(__dirname, '..', process.env.PUBLIC_PATH), {
-  maxAge: '2m' // 2 minutes
-}))
+app.use(
+  '/assets',
+  express.static(path.join(__dirname, '..', process.env.PUBLIC_PATH), {
+    maxAge: '2m' // 2 minutes
+  })
+)
 
 // Static files
-app.use(express.static(path.join(__dirname, '..', process.env.STATIC_PATH), {
-  maxAge: '2m'
-}))
+app.use(
+  express.static(path.join(__dirname, '..', process.env.STATIC_PATH), {
+    maxAge: '2m'
+  })
+)
 
 module.exports = {
   app

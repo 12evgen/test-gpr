@@ -19,7 +19,7 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "rimraf _build_dev && node bin/server.dev.js",
-    "prod": "node bin/build && cross-env PUBLIC_PATH=../assets/public STATIC_PATH=../assets/static NODE_ENV=production node _build_prod",
+    "prod": "node bin/build && cross-env PUBLIC_PATH=client/assets STATIC_PATH=server/static NODE_ENV=production node _build_prod",
     "build": "node bin/build",
     "format": "prettier --single-quote --semi=false --write \"{src,server,webpack}/**/*.js\" && eslint --fix src server webpack",
     "lint:css": "stylelint src/**/*.scss",
@@ -112,7 +112,7 @@
     "eslint-plugin-react": "^7.14.2",
     "eslint-plugin-standard": "^4.0.0",
     "fs-extra": "^8.1.0",
-    "husky": "^3.0.1",
+    "husky": "^4.2.1",
     "lint-staged": "^9.2.1",
     "node-sass": "^4.13.1",
     "ora": "^4.0.3",

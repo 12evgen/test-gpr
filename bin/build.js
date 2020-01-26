@@ -104,7 +104,7 @@ function createPackageJson () {
         },
         peerDependencies,
         scripts: {
-          start: 'cross-env PUBLIC_PATH=../assets/public STATIC_PATH=../assets/static NODE_ENV=production node index.js'
+          start: 'cross-env PUBLIC_PATH=client/assets STATIC_PATH=server/static NODE_ENV=production node index.js'
         },
         dependencies
       }, null, 2)
