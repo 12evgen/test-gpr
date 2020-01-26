@@ -1,39 +1,105 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs:
-  build:
+  build_frontend:
     docker:
-      # specify the version you desire here
       - image: circleci/node:11.10
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
     working_directory: ~/repo
-
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-
       - run: npm install
-
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # run tests!
+  lint:
+    working_directory: ~/repo
+    steps:
+      - checkout
       - run: npm run lint:css
-
       - run: npm run lint:js
+
+  build_docker:
+    docker:
+      - image: docker:18.09.5
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Pokemon Docker Image
+          command: docker build -t 12evgen/pokemon:latest .
+      - deploy:
+          name: Push Pokemon to DockerHub
+          command: |
+            docker login -u$DOCKERHUB_LOGIN -p$DOCKERHUB_PASSWORD
+            docker tag 12evgen/pokemon:latest 12evgen/pokemon:${CIRCLE_SHA1}
+            docker push 12evgen/pokemon:latest
+            docker push 12evgen/pokemon:${CIRCLE_SHA1}
+
+  deploy:
+    docker:
+      - image: 12evgen/pokemon:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - bundles-{{ .Revision }}
+      - add_ssh_keys:
+          fngerprints:
+            - "c7:1f:fb:eb:c0:79:6b:c9:f7:71:62:d6:f5:c0:d5:e7"
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+
+workflows:
+  version: 2
+  release:
+    jobs:
+      - build_frontend:
+          filters:
+            branches:
+              only: master
+      - lint:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - build_docker:
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - build_frontend
+            - lint
+          filters:
+            branches:
+              only: master
+
+  development:
+    jobs:
+      - build_frontend:
+          filters:
+            branches:
+              ignore: master
+      - lint:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: master
+      - build_docker:
+          requires:
+            - build_frontend
+            - lint
+          filters:
+            branches:
+              ignore: master
