@@ -47,11 +47,9 @@ jobs:
       - deploy:
           name: Push Pokemon to DockerHub
           command: |
-            PACKAGE_VERSION=$(node -p "require('./package.json').version")
             docker login -u $DOCKERHUB_LOGIN -p $DOCKERHUB_PASSWORD
-            docker tag 12evgen/pokemon:latest 12evgen/pokemon:$PACKAGE_VERSION
+            docker tag 12evgen/pokemon:latest
             docker push 12evgen/pokemon:latest
-            docker push 12evgen/pokemon:$PACKAGE_VERSION
 
   deploy:
     docker:
