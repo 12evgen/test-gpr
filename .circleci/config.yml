@@ -1,3 +1,8 @@
+defaults: &defaults
+  docker:
+    - image: circleci/node:latest-browsers
+  working_directory: ~/repo
+
 version: 2
 jobs:
   build_frontend:
@@ -29,6 +34,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
   build_docker:
+    <<: *defaults
     docker:
       - image: docker:18.09.5
     working_directory: ~/repo
@@ -37,15 +43,18 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build Pokemon Docker Image
-          command: docker build -t 12evgen/pokemon:$(node -p "require('./package.json').version") .
+          command: |
+            PACKAGE_VERSION=$(node -p "require('./package.json').version")
+            docker build -t 12evgen/pokemon:$PACKAGE_VERSION .
+
       - deploy:
           name: Push Pokemon to DockerHub
           command: |
-            VERSION=v$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g')
+            PACKAGE_VERSION=$(node -p "require('./package.json').version")
             docker login -u$DOCKERHUB_LOGIN -p$DOCKERHUB_PASSWORD
             docker tag 12evgen/pokemon:latest 12evgen/pokemon:${CIRCLE_SHA1}
             docker push 12evgen/pokemon:latest
-            docker push 12evgen/pokemon:${VERSION}
+            docker push 12evgen/pokemon:$PACKAGE_VERSION
 
   deploy:
     docker:
