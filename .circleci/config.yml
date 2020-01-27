@@ -41,10 +41,11 @@ jobs:
       - deploy:
           name: Push Pokemon to DockerHub
           command: |
+            VERSION=v$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g')
             docker login -u$DOCKERHUB_LOGIN -p$DOCKERHUB_PASSWORD
             docker tag 12evgen/pokemon:latest 12evgen/pokemon:${CIRCLE_SHA1}
             docker push 12evgen/pokemon:latest
-            docker push 12evgen/pokemon:$(node -p "require('./package.json').version")
+            docker push 12evgen/pokemon:${VERSION}
 
   deploy:
     docker:
