@@ -37,16 +37,14 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build Pokemon Docker Image
-          command: docker build -t 12evgen/pokemon:latest .
-      - script:
-          - export VERSION=$(cat package.json | jq -r .version)
+          command: docker build -t 12evgen/pokemon:$(node -p "require('./package.json').version") .
       - deploy:
           name: Push Pokemon to DockerHub
           command: |
             docker login -u$DOCKERHUB_LOGIN -p$DOCKERHUB_PASSWORD
             docker tag 12evgen/pokemon:latest 12evgen/pokemon:${CIRCLE_SHA1}
             docker push 12evgen/pokemon:latest
-            docker push 12evgen/pokemon:${VERSION}
+            docker push 12evgen/pokemon:$(node -p "require('./package.json').version")
 
   deploy:
     docker:
