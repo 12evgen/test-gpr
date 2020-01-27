@@ -35,14 +35,11 @@ jobs:
 
   build_docker:
     <<: *defaults
-    docker:
-      - image: docker:18.09.5
-    working_directory: ~/repo
     steps:
       - checkout
       - setup_remote_docker
       - run:
-          name: Build Pokemon Docker Image
+          name: Build docker image
           command: |
             PACKAGE_VERSION=$(node -p "require('./package.json').version")
             docker build -t 12evgen/pokemon:$PACKAGE_VERSION .
