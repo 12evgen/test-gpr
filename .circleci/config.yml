@@ -77,7 +77,7 @@ jobs:
       - run:
           name: Release new container
           command: |
-            docker run --rm -e HEROKU_API_KEY=${HEROKU_API_KEY} 12evgen/${HEROKU_APP_NAME_STAGE} container:release --a ${HEROKU_APP_NAME_STAGE} web
+            heroku container:release web --app HEROKU_APP_NAME_STAGE
 
   deploy-to-production:
     docker:
@@ -130,6 +130,7 @@ workflows:
             branches:
               ignore: master
       - build_docker:
+          type: approval
           requires:
             - build_frontend
           filters:
