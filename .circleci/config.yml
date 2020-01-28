@@ -50,7 +50,36 @@ jobs:
             docker push 12evgen/pokemon:latest
             docker push 12evgen/pokemon:$PACKAGE_VERSION
 
-  deploy:
+  deploy-to-staging:
+    docker:
+      - image: 12evgen/pokemon:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - bundles-{{ .Revision }}
+      - run:
+          name: Login registry.heroku.com
+          command: docker login --username=${HEROKU_LOGIN} --password=${HEROKU_API_KEY} registry.heroku.com
+      - run:
+          name: Pull docker image from Docker Hub
+          command: |
+            docker pull 12evgen/pokemon:latest
+      - run:
+          name: Tag image for Heroku DTR
+          command: |
+            docker tag 12evgen/pokemon:latest registry.heroku.com/${HEROKU_APP_NAME_STAGE}/web
+      - run:
+          name: Push image to Heroku DTR
+          command: |
+            docker push registry.heroku.com/${HEROKU_APP_NAME_STAGE}/web:latest
+      - run:
+          name: Release new container
+          command: |
+            docker run --rm -e HEROKU_API_KEY=${HEROKU_API_KEY} 12evgen/${HEROKU_APP_NAME_STAGE} container:release --app ${HEROKU_APP_NAME_STAGE} web
+
+  deploy-to-production:
     docker:
       - image: 12evgen/pokemon:latest
     working_directory: ~/repo
@@ -79,8 +108,16 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy:
+      - hold-deploy-prod:
+          type: approval
           requires:
+            - build_frontend
+          filters:
+            branches:
+              only: master
+      - deploy-to-production:
+          requires:
+            - hold-deploy-prod
             - build_frontend
           filters:
             branches:
@@ -97,4 +134,18 @@ workflows:
             - build_frontend
           filters:
             branches:
+              ignore: master
+      - hold-deploy-stage:
+          type: approval
+          requires:
+            - build_frontend
+          filters:
+            branches:
+              ignore: master
+      - deploy-to-staging:
+          requires:
+            - hold-deploy-stage
+            - build_frontend
+          filters:
+             branches:
               ignore: master
