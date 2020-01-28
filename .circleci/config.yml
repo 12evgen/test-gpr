@@ -133,7 +133,7 @@ workflows:
       - hold-deploy-stage:
           type: approval
           requires:
-            - build_frontend
+            - build-frontend
           filters:
             branches:
               ignore: master
@@ -145,7 +145,7 @@ workflows:
               ignore: master
       - deploy-to-staging:
           requires:
-            - build_frontend
+            - build-frontend
             - hold-deploy-stage
             - build-docker-stage
           filters:
