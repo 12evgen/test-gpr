@@ -5,7 +5,7 @@ defaults: &defaults
 
 version: 2
 jobs:
-  build_frontend:
+  build-frontend:
     docker:
       - image: circleci/node:11.10
     working_directory: ~/repo
@@ -33,7 +33,7 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-  build_docker:
+  build-docker-stage:
     <<: *defaults
     steps:
       - checkout
@@ -44,10 +44,23 @@ jobs:
       - deploy:
           name: Push Pokemon to DockerHub
           command: |
-            PACKAGE_VERSION=$(node -p "require('./package.json').version")
             docker login -u $DOCKERHUB_LOGIN -p $DOCKERHUB_PASSWORD
-            docker tag 12evgen/pokemon:latest 12evgen/pokemon:$PACKAGE_VERSION
             docker push 12evgen/pokemon:latest
+
+  build-docker-prod:
+    <<: *defaults
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build docker image
+          command: |
+            PACKAGE_VERSION=$(node -p "require('./package.json').version")
+            docker build -t 12evgen/pokemon:$PACKAGE_VERSION .
+      - deploy:
+          name: Push Pokemon to DockerHub
+          command: |
+            docker login -u $DOCKERHUB_LOGIN -p $DOCKERHUB_PASSWORD
             docker push 12evgen/pokemon:$PACKAGE_VERSION
 
   deploy-to-staging:
@@ -111,37 +124,9 @@ jobs:
 
 workflows:
   version: 2
-  release:
-    jobs:
-      - build_frontend:
-          filters:
-            branches:
-              only: master
-      - hold-deploy-prod:
-          type: approval
-          requires:
-            - build_frontend
-          filters:
-            branches:
-              only: master
-      - build_docker:
-          requires:
-            - hold-deploy-prod
-          filters:
-            branches:
-              only: master
-      - deploy-to-production:
-          requires:
-            - build_frontend
-            - hold-deploy-prod
-            - build_docker
-          filters:
-            branches:
-              only: master
-
   development:
     jobs:
-      - build_frontend:
+      - build-frontend:
           filters:
             branches:
               ignore: master
@@ -152,7 +137,7 @@ workflows:
           filters:
             branches:
               ignore: master
-      - build_docker:
+      - build-docker-stage:
           requires:
             - hold-deploy-stage
           filters:
@@ -162,7 +147,35 @@ workflows:
           requires:
             - build_frontend
             - hold-deploy-stage
-            - build_docker
+            - build-docker-stage
           filters:
-             branches:
+            branches:
               ignore: master
+
+  release:
+    jobs:
+      - build-frontend:
+          filters:
+            branches:
+              only: master
+      - hold-deploy-prod:
+          type: approval
+          requires:
+            - build_frontend
+          filters:
+            branches:
+              only: master
+      - build-docker-prod:
+          requires:
+            - hold-deploy-prod
+          filters:
+            branches:
+              only: master
+      - deploy-to-production:
+          requires:
+            - build-frontend
+            - hold-deploy-prod
+            - build-docker-prod
+          filters:
+            branches:
+              only: master
