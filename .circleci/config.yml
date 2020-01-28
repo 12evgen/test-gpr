@@ -128,25 +128,24 @@ workflows:
           filters:
             branches:
               ignore: master
-      - build_docker:
+      - hold-deploy-stage:
           type: approval
           requires:
             - build_frontend
           filters:
             branches:
               ignore: master
-      - hold-deploy-stage:
-          type: approval
+      - build_docker:
           requires:
-            - build_docker
+            - hold-deploy-stage
           filters:
             branches:
               ignore: master
       - deploy-to-staging:
           requires:
             - build_frontend
-            - build_docker
             - hold-deploy-stage
+            - build_docker
           filters:
              branches:
               ignore: master
