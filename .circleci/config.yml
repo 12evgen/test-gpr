@@ -130,7 +130,6 @@ workflows:
             branches:
               ignore: master
       - build_docker:
-          type: approval
           requires:
             - build_frontend
           filters:
