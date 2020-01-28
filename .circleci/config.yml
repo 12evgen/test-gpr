@@ -78,12 +78,7 @@ jobs:
       - run:
           name: Pull docker image from Docker Hub
           command: |
-            PACKAGE_VERSION=$(node -p "require('./package.json').version")
-            docker pull 12evgen/pokemon:$PACKAGE_VERSION
-      - run:
-          name: Tag image for Heroku
-          command: |
-            docker tag 12evgen/pokemon:latest registry.heroku.com/${HEROKU_APP_NAME_STAGE}/web
+            docker pull 12evgen/pokemon:latest
       - run:
           name: Push image to Heroku
           command: |
