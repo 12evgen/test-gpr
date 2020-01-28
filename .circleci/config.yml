@@ -80,6 +80,10 @@ jobs:
           command: |
             docker pull 12evgen/pokemon:latest
       - run:
+          name: Tag image for Heroku
+          command: |
+            docker tag 12evgen/pokemon:latest registry.heroku.com/${HEROKU_APP_NAME_STAGE}/web
+      - run:
           name: Push image to Heroku
           command: |
             docker push registry.heroku.com/${HEROKU_APP_NAME_STAGE}/web
