@@ -71,9 +71,9 @@ jobs:
           command: |
             docker tag 12evgen/pokemon:latest registry.heroku.com/${HEROKU_APP_NAME_STAGE}/web
       - run:
-          name: Push image to Heroku DTR
+          name: Push image to Heroku
           command: |
-            docker push registry.heroku.com/${HEROKU_APP_NAME_STAGE}/web:latest
+            docker push registry.heroku.com/${HEROKU_APP_NAME_STAGE}/web
       - run:
           name: Release new container
           command: |
