@@ -161,7 +161,7 @@ workflows:
       - hold-deploy-prod:
           type: approval
           requires:
-            - build_frontend
+            - build-frontend
           filters:
             branches:
               only: master
