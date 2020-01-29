@@ -13,8 +13,8 @@
     "pokemon-app": "./bin/server.prod.js"
   },
   "engines": {
-    "node": "11.10.x",
-    "npm": "6.7.x"
+    "node": "12.13.x",
+    "npm": "6.12.x"
   },
   "scripts": {
     "start": "npm run dev",
