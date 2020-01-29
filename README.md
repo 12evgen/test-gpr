@@ -2,6 +2,7 @@
 [![dependencies Status](https://david-dm.org/12evgen/pokemon-app/status.svg)](https://david-dm.org/12evgen/pokemon-app)
 [![devDependencies Status](https://david-dm.org/12evgen/pokemon-app/dev-status.svg)](https://david-dm.org/12evgen/pokemon-app?type=dev)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+![GitHub repo size](https://img.shields.io/github/repo-size/12evgen/pokemon-app)
 
 ## Start
 
