@@ -1,6 +1,0 @@
-_build_dev/
-_build_prod/
-node_modules/
-bin/
-package-lock.json
-package.json

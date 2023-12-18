@@ -1,6 +1,10 @@
-# NPM
+# Dependency directories
 node_modules/
 
-# Build
-_build_dev/
-_build_prod/
+# Styling
+*.scss
+
+# Dist
+build/
+dist/
+standalone/
